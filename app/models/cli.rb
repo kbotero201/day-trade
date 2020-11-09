@@ -48,8 +48,8 @@ class CLI
         price_api_resp = RestClient.get("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=#{stock_symbols.sample}&interval=60min&outputsize=full&apikey=VLBVHKO2VWRJNR1W")
         price_api_data =JSON.parse(price_api_resp)
         Spi.create(stock_symbol: price_api_data["Meta Data"]["2. Symbol"])
-    
     end
+
 
     def display_menu
     
@@ -60,11 +60,16 @@ class CLI
         action = @@prompt.select("What would you like to do?", choices)
         case action
             when 1
+                new1 = self.random_symbol
+                 macd_api_resp = RestClient.get("https://www.alphavantage.co/query?function=MACD&symbol=#{new1.stock_symbol}&interval=60min&series_type=open&apikey=VLBVHKO2VWRJNR1W")
+                macd_api_data = JSON.parse(macd_api_resp)
                 @@game = Game.new
                 @@game.user_balance = 100000
+                @@game.date = macd_api_data["Technical Analysis: MACD"].to_a.sample[0].split(" ")[0]
                 puts "Hi, #{@@user.username}, your balance is #{@@game.user_balance} "
-                puts "For this game, your stock is: #{self.random_symbol.stock_symbol}"
-                puts "Your startdate is 
+                puts "For this game, your stock is: #{new1.stock_symbol}"
+                puts "Your startdate is #{@@game.date}"
+            
         end
                 
         # # Displays the options to the user!
