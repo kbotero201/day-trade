@@ -3,6 +3,8 @@ require "pry"
 require 'rest-client'  
 require 'json' 
 
+
+
 class CLI
     @@prompt = TTY::Prompt.new
     @@artii = Artii::Base.new :font => 'slant'
@@ -16,31 +18,55 @@ class CLI
     end
 
     def auth_sequence
-        sleep(1.5)
-        # @@user = User.first
-        # self.display_menu
-        choices = { "Log In" => 1,
-            "Sign Up" => 2
-        }
-        choice = @@prompt.select("Would you like to sign up or log in?", choices)
-        if choice == 1
-            @@user = User.login
-            if @@user
-                self.display_menu
-            else
-                self.auth_sequence
-            end
-        else
-            @@user = User.signup
-            if @@user
-                self.display_menu
-            else
-                self.auth_sequence
-            end
-        end
+        # sleep(1.5)
+        @@user = User.first
+        self.display_menu
+        # choices = { "Log In" => 1,
+        #     "Sign Up" => 2
+        # }
+        # choice = @@prompt.select("Would you like to sign up or log in?", choices)
+        # if choice == 1
+        #     @@user = User.login
+        #     if @@user
+        #         self.display_menu
+        #     else
+        #         self.auth_sequence
+        #     end
+        # else
+        #     @@user = User.signup
+        #     if @@user
+        #         self.display_menu
+        #     else
+        #         self.auth_sequence
+        #     end
+        # end
+    end
+
+    def random_symbol
+        stock_symbols= ["GOOG", "IBM", "SPY"]
+        stock_symbols.sample
+        price_api_resp = RestClient.get("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=#{stock_symbols.sample}&interval=60min&outputsize=full&apikey=VLBVHKO2VWRJNR1W")
+        price_api_data =JSON.parse(price_api_resp)
+        Spi.create(stock_symbol: price_api_data["Meta Data"]["2. Symbol"])
+    
     end
 
     def display_menu
+    
+
+        choices = { "Start game" => 1,
+                    "Test" => 2
+        }
+        action = @@prompt.select("What would you like to do?", choices)
+        case action
+            when 1
+                @@game = Game.new
+                @@game.user_balance = 100000
+                puts "Hi, #{@@user.username}, your balance is #{@@game.user_balance} "
+                puts "For this game, your stock is: #{self.random_symbol.stock_symbol}"
+                puts "Your startdate is 
+        end
+                
         # # Displays the options to the user!
         # system('clear')
         # choices = { "Play a random category" => 1,
