@@ -9,68 +9,51 @@ Utilize Alpha Advantage Stock Data Api, JSON gem, & TTY prompt gem.
 # Models, Attributes, and Associations
 User: username, password
 
-Playlist: user_id, name, category/genre/vibe?
+Spi: stock_symbol
 
-Track: (all the built in info from Spotify: artist, album, duration, browser url, etc)
+Game: user_id, spi_id, date, user_balance
 
-Review: user_id, playlist_id
 
-playlistUser: playlist_id, user_id
+User has_many Games
 
-playlistTrack: playlist_id, track_id
+User has_many Spis through Games
 
-User has_many Playlists
+Game belongs_to User
 
-User has_many Reviews
+Game belongs_to Spi
 
-User has_many Tracks through Playlists
+Spi has_many Games
 
-User has_many Artists through Tracks
+Spi has_many Users through Games
 
-Playlist belongs_to User (creator relationship)
-
-Playlist has_many Users (listener relationship)
-
-Playlist has_many Reviews
-
-Playlist has_many Tracks
-
-Track has_many Playlists
-
-Track has_many Users through Playlists
-
-Review belongs_to User
-
-Review belongs_to Playlist
 
 # Relationship Chart
-User => Game <= Stock 
+User => Game <= Spi (stock) 
 
-#self referentials?
 
-User => Review <= Playlist (same structure as playlistUser, but not all Users will leave reviews for every Playlist they listen to)
 			 
 # User Stories
-!!!As a User, I can search through all created Playlists ###DONE###
+As a user, I can see my highscore
 
-!!!As a User, I can select and save Playlists to my library listen to ###DONE###
+As a user, I can see the leaderboard and see how I compare to other users that played
 
-As a User, I can remove Playlists from my library ###DONE###
+As a user, I can buy, sell, or hold my stock for each hour
 
-As a User, I can leave/edit/delete reviews on Playlists
+As a user, I can see hour by hour updates on my stocks price, RSI, MACD, percentage loss/gain, and user balance
 
-!!!As a User, I can create and populate Playlists
+As a user, I can enter a cheat code and change my own highscore
 
-!!!As a User, I can directly input a song into one of my Playlists
+As a user, I can enter a cheat code and delete another users highscore
 
-As a User, I can generate some Tracks for a Playlist by various search methods: genre, artist, popularity, etc.
 
-As A User, I can see how many Users are listening to which of my Playlists
+
 
 ## KNOWN IMPROVEMENTS NEEDED
 
-Edit existing has bug if u dont have any to edit
+Small bug fixes 
 
-Delete has bug 
+Implement DRY methods  
 
-Need more back buttons everywhere
+Additional Styling 
+
+
